@@ -13,7 +13,7 @@ export class Account {
     password: string;
     @Column({default: "DaiS"})
     name: string;
-    @Column({type: "date", default: "01/01/2023"})
+    @Column({ default: "1"})
     birthday: string;
     @Column({default: "1"})
     avatar: string;
@@ -27,4 +27,5 @@ export class Account {
     comment: Comment[];
     @OneToMany(() => Like, (like) => like.account)
     like: Like[];
+
 }

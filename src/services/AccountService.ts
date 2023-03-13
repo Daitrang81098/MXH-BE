@@ -11,29 +11,21 @@ class AccountService {
         this.accountRepository = AppDataSource.getRepository(Account);
     }
 
-    register = async (user) => {
-        let userCheck = await this.accountRepository.findOneBy({username: user.username})
-        if (!userCheck) {
-            user.userPassword = await bcrypt.hash(user.password, 10);
-            return this.accountRepository.save(user);
-        }
-        return 'Username registered';
-    }
     checkUser = async (user) => {
         let userCheck = await this.accountRepository.findOneBy({username: user.username})
         if (!userCheck) {
             return 'User is not exit';
         } else {
-            let passwordCompare = await bcrypt.compare(user.userPassword, userCheck.userPassword);
+            let passwordCompare = await bcrypt.compare(user.password, userCheck.password);
             if (!passwordCompare) {
                 return 'Password is wrong'
             } else {
                 let payload = {
-                    idUser: userCheck.idUser,
+                    idAccount: userCheck.idAccount,
                     username: userCheck.username,
                 }
                 return {
-                    idUser: userCheck.idUser,
+                    idAccount: userCheck.idAccount,
                     username: userCheck.username,
                     token: jwt.sign(payload, SECRET, {
                         expiresIn: 3000000
@@ -43,6 +35,15 @@ class AccountService {
         }
 
     }
+    register = async (account) => {
+        console.log(222222222,account)
+        let userCheck = await this.accountRepository.findOneBy({username: account.username})
+        if (!userCheck) {
+            account.password = await bcrypt.hash(account.password, 10);
+            return this.accountRepository.save(account);
+        }
+        return 'Username registered';
+    }
     findById = async (id)=> {
         let account = await this.accountRepository.findOneBy({idUser:id});
         if(!account){
@@ -51,4 +52,4 @@ class AccountService {
         return account;
     }
 }
-export default AccountService
+export default new AccountService;

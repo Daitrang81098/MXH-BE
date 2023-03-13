@@ -13,9 +13,9 @@ class AccountController {
             let account = await this.accountService.register(req.body)
             res.status(201).json(account)
         } catch (e) {
+            console.log(1)
             res.status(500).json(e.message)
         }
-
     }
     login = async (req: Request, res: Response) => {
         try {
@@ -39,7 +39,6 @@ class AccountController {
             res.status(500).json(e.message)
         }
     }
-
 }
 
-export default AccountController;
+export default new AccountController;

@@ -1,5 +1,9 @@
 import "reflect-metadata"
-import { DataSource } from "typeorm";
+import {DataSource} from "typeorm";
+import {Account} from "./models/Account";
+import Comment from "./models/Comment";
+import Like from "./models/Like";
+import Post from "./models/Post";
 
 
 export const AppDataSource = new DataSource({
@@ -10,5 +14,5 @@ export const AppDataSource = new DataSource({
     password: "123456",
     database: "mxh",
     synchronize: true,
-    entities: ["dist/src/entity/*.js"]
+    entities: [Account,Comment,Like,Post]
 })
