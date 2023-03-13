@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import {AppDataSource} from "./src/data-source";
 
 import cors from 'cors';
-// import {router} from "./src/routes/router";
+import {router} from "./src/routes/router";
 
 const app = express();
 AppDataSource.initialize().then(() => {
@@ -12,7 +12,7 @@ AppDataSource.initialize().then(() => {
 app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-// app.use('', router);
+app.use('', router);
 
 app.listen(4000, () => {
     console.log('Server is running')
