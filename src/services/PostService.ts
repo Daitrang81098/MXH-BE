@@ -10,8 +10,9 @@ import Post from "../models/Post";
     }
 
     findPost = async () => {
-        let sql = `select * from post`
-        let post = await this.postRepository.query(sql);
+        let post = await this.postRepository.find({
+                 relations: ['account']
+             });
         if (!post) {
             return 'Can not findPost'
         }
@@ -25,6 +26,8 @@ import Post from "../models/Post";
         }
         return post;
     }
+
+
      updatePost = async (idPost, newPost) => {
          let posts = await this.postRepository.findOneBy({idPost: idPost})
          if (!posts) {

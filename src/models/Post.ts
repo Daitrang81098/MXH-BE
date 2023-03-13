@@ -7,8 +7,6 @@ import {Account} from "./Account";
 export default class Post {
     @PrimaryGeneratedColumn()
     idPost: number;
-    @Column()
-    idAccount : number;
     @Column({default: "public"})
     status: string;
     @Column()

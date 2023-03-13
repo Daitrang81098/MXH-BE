@@ -36,7 +36,6 @@ class AccountService {
 
     }
     register = async (account) => {
-        console.log(222222222,account)
         let userCheck = await this.accountRepository.findOneBy({username: account.username})
         if (!userCheck) {
             account.password = await bcrypt.hash(account.password, 10);

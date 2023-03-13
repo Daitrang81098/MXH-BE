@@ -10,8 +10,6 @@ export default class Comment {
     content: string;
     @Column({ default: "01/01/2023"})
     time: string;
-    @Column()
-    idAccount: number;
     @Column({default: "1"})
     image: string;
     @ManyToOne(() => Post, (post) => post.comment)

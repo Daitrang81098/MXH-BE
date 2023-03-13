@@ -6,8 +6,6 @@ import {Account} from "./Account";
 export default class Like {
     @PrimaryGeneratedColumn()
     idLike: number;
-    @Column()
-    idAccount: number;
     @ManyToOne(() => Post, (post) => post.like)
     post: Post;
     @ManyToOne(()=>Account,(account)=>account.like)
