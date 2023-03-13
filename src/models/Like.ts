@@ -9,7 +9,7 @@ export default class Like {
     @Column()
     idAccount: number;
     @ManyToOne(() => Post, (post) => post.like)
-    post: Post
+    post: Post;
     @ManyToOne(()=>Account,(account)=>account.like)
     account : Account;
 }
