@@ -8,7 +8,7 @@ export default class Comment {
     idComment: number;
     @Column()
     content: string;
-    @Column({type: "datetime", default: "01/01/2023"})
+    @Column({default: "01/01/2023"})
     time: string;
     @Column()
     idAccount: number;

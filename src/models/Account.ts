@@ -13,7 +13,7 @@ export class Account {
     password: string;
     @Column({default: "DaiS"})
     name: string;
-    @Column({type: "date", default: "01/01/2023"})
+    @Column({default: "01/01/2023"})
     birthday: string;
     @Column({default: "1"})
     avatar: string;

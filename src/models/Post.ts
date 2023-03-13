@@ -13,7 +13,7 @@ export default class Post {
     status: string;
     @Column()
     content: string;
-    @Column({type: "datetime", default: "1/1/2023"})
+    @Column({ default: "1/1/2023"})
     time: string;
     @Column({default: "1"})
     image: string;
