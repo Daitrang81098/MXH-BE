@@ -26,6 +26,13 @@ import Post from "../models/Post";
         }
         return post;
     }
+     findByIdPost = async (idPost)=> {
+         let post = await this.postRepository.findOneBy({idPost:idPost});
+         if(!post){
+             return null;
+         }
+         return post;
+     }
 
 
      updatePost = async (idPost, newPost) => {

@@ -5,8 +5,9 @@ export const postRouter = Router();
 
 postRouter.post('/',postController.addPost);
 postRouter.get('/',postController.getPost);
-postRouter.put('/:idPost',postController.editPost)
-postRouter.delete('/:idPost',postController.deletePost)
+postRouter.get('/findById/:id',postController.findByIdPost);
+postRouter.put('/:idPost',postController.editPost);
+postRouter.delete('/:idPost',postController.deletePost);
 
 
 
