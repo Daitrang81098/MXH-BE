@@ -26,6 +26,15 @@ import PostService from "../services/PostService";
              res.status(500).json(e.message)
          }
      }
+     findByIdPost = async (req: Request, res: Response) => {
+         try{
+             let idPost = req.params.id
+             let post = await this.postService.findByIdPost(idPost);
+             res.status(200).json(post)
+         } catch (e) {
+             res.status(500).json(e.message)
+         }
+     }
 
 
     getPost = async (req: Request, res: Response) => {
