@@ -1,4 +1,4 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import Post from "./Post";
 import {Account} from "./Account";
 
@@ -8,8 +8,8 @@ export default class Comment {
     idComment: number;
     @Column()
     content: string;
-    @Column({ default: "01/01/2023"})
-    time: string;
+    @CreateDateColumn({ type: "timestamp"})
+    time: Date;
     @Column({default: "1"})
     image: string;
     @ManyToOne(() => Post, (post) => post.comment)
