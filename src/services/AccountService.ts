@@ -58,6 +58,37 @@ class AccountService {
                 return false;
             }
         }
-}
 
+    checkChangePassword = async (id, oldPassword, newPassword) => {
+        let account = {
+            check: false,
+            accountFind: []
+        }
+        let accountFind = await this.accountRepository.findBy({idAccount: id})
+        if (accountFind.length === 0) {
+            account.check = false;
+        } else {
+            let compare = await bcrypt.compare(oldPassword, accountFind[0].password)
+            if (!compare) {
+                account.accountFind = accountFind
+                account.check = false;
+            }
+            if (compare) {
+                newPassword = await bcrypt.hash(newPassword, 10)
+                await this.accountRepository.update({idAccount: id}, {password: newPassword})
+                account.check = true;
+                account.accountFind = accountFind
+            }
+        }
+        return account
+    }
+
+    updateAccount = async (id, newAccount) => {
+        let accounts = await this.accountRepository.findOneBy({idAccount: id})
+        if (!accounts) {
+            return null
+        }
+        return await this.accountRepository.update({idAccount: id}, newAccount)
+    }
+}
 export default new AccountService;

@@ -51,6 +51,36 @@ class AccountController {
             res.status(500).json(e.message)
         }
     }
+    changePassword = async (req: Request, res: Response) => {
+        try {
+            let account = await this.accountService.checkChangePassword(req.params.id, req.body.oldPassword, req.body.newPassword)
+            if (!account.check) {
+
+                res.json({
+                     account,
+                    mess: "Old Password Is Not Correct"
+                })
+            } else {
+                res.json({
+                    account,
+                    mess: "Change Password Successfully"
+                })
+            }
+        } catch (e) {
+            res.json({
+                mess: e.message + 1,
+            })
+        }
+    }
+
+    editAccount = async (req: Request, res: Response)=> {
+        try {
+            let account = await this.accountService.updateAccount(req.params.id,req.body);
+            res.status(200).json(account)
+        } catch (e) {
+            res.status(500).json(e.message)
+        }
+    }
 }
 
 export default new AccountController;
