@@ -11,8 +11,10 @@ import Post from "../models/Post";
 
     findPost = async () => {
         let post = await this.postRepository.find({
-                 relations: ['account']
-             });
+        relations: ['account'],
+            order:{
+            time: "DESC"
+        }})
         if (!post) {
             return 'Can not findPost'
         }

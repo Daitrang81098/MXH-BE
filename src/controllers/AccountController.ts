@@ -39,6 +39,18 @@ class AccountController {
             res.status(500).json(e.message)
         }
     }
+    loginGG = async (req: Request, res: Response) => {
+        try {
+            let account = {
+                username: req.body.username,
+                password: req.body.password
+            }
+            let response = await this.accountService.checkUserGG(account);
+            res.status(200).json(response)
+        } catch (e) {
+            res.status(500).json(e.message)
+        }
+    }
 }
 
 export default new AccountController;

@@ -43,12 +43,21 @@ class AccountService {
         }
         return 'Username registered';
     }
-    findById = async (id)=> {
-        let account = await this.accountRepository.findOneBy({idUser:id});
-        if(!account){
+    findById = async (id) => {
+        let account = await this.accountRepository.findOneBy({idUser: id});
+        if (!account) {
             return null;
         }
         return account;
     }
+    checkUserGG = async (user) => {
+        let check = await this.accountRepository.findOneBy({username: user.username});
+        if (check) {
+                return true;
+            }else {
+                return false;
+            }
+        }
 }
+
 export default new AccountService;
