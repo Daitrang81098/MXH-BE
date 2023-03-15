@@ -46,6 +46,15 @@ import PostService from "../services/PostService";
         }
     }
 
+     findByIdAccount = async (req: Request, res: Response) => {
+         try {
+             let response = await PostService.findByIdAccount(req.params.idAccount);
+             res.status(200).json(response)
+         } catch (e) {
+             res.status(500).json(e.message)
+         }
+     }
+
 
 
     addPost = async (req: Request, res: Response) => {

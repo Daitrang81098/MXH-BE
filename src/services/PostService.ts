@@ -1,8 +1,7 @@
-
 import {AppDataSource} from "../data-source";
 import Post from "../models/Post";
 
- class PostService {
+class PostService {
     private postRepository
 
     constructor() {
@@ -11,10 +10,23 @@ import Post from "../models/Post";
 
     findPost = async () => {
         let post = await this.postRepository.find({
-        relations: ['account'],
-            order:{
-            time: "DESC"
-        }})
+            relations: ['account'],
+            order: {
+                time: "DESC"
+            }
+        })
+        if (!post) {
+            return 'Can not findPost'
+        }
+        return post;
+    }
+
+    findByIdAccount = async (idAccount) => {
+        let post = await this.postRepository.createQueryBuilder("post")
+            .innerJoinAndSelect("post.account", "account")
+            .where(`account.idAccount = ${idAccount}`)
+            .orderBy("time", "DESC")
+            .getMany()
         if (!post) {
             return 'Can not findPost'
         }
@@ -28,28 +40,28 @@ import Post from "../models/Post";
         }
         return post;
     }
-     findByIdPost = async (idPost)=> {
-         let post = await this.postRepository.findOneBy({idPost:idPost});
-         if(!post){
-             return null;
-         }
-         return post;
-     }
+    findByIdPost = async (idPost) => {
+        let post = await this.postRepository.findOneBy({idPost: idPost});
+        if (!post) {
+            return null;
+        }
+        return post;
+    }
 
-     updatePost = async (idPost, newPost) => {
-         let posts = await this.postRepository.findOneBy({idPost: idPost})
-         if (!posts) {
-             return null
-         }
-         return await this.postRepository.update({idPost: idPost}, newPost)
-     }
-     removePost = async (idPost) => {
-         let posts = await this.postRepository.findOneBy({idPost : idPost});
-         if(!posts){
-             return null
-         }
-         return this.postRepository.delete({idPost : idPost});
-     }
+    updatePost = async (idPost, newPost) => {
+        let posts = await this.postRepository.findOneBy({idPost: idPost})
+        if (!posts) {
+            return null
+        }
+        return await this.postRepository.update({idPost: idPost}, newPost)
+    }
+    removePost = async (idPost) => {
+        let posts = await this.postRepository.findOneBy({idPost: idPost});
+        if (!posts) {
+            return null
+        }
+        return this.postRepository.delete({idPost: idPost});
+    }
 }
 
 
