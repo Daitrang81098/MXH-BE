@@ -10,14 +10,17 @@ import Post from "../models/Post";
     }
 
     findPost = async () => {
-        let post = await this.postRepository.find({
-                 relations: ['account']
-             });
-        if (!post) {
+        let posts = await this.postRepository.find(
+            {relations: ['account'],
+            order:{
+                time: "DESC"
+            }});
+        if (!posts) {
             return 'Can not findPost'
         }
-        return post;
+        return posts;
     }
+
 
     createPost = async (value) => {
         let post = await this.postRepository.save(value);
@@ -26,6 +29,7 @@ import Post from "../models/Post";
         }
         return post;
     }
+
      findByIdPost = async (idPost)=> {
          let post = await this.postRepository.findOneBy({idPost:idPost});
          if(!post){
@@ -41,6 +45,7 @@ import Post from "../models/Post";
          }
          return await this.postRepository.update({idPost: idPost}, newPost)
      }
+
      removePost = async (idPost) => {
          let posts = await this.postRepository.findOneBy({idPost : idPost});
          if(!posts){
