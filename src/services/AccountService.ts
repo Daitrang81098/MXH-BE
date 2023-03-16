@@ -23,10 +23,12 @@ class AccountService {
                 let payload = {
                     idAccount: userCheck.idAccount,
                     username: userCheck.username,
+                    name: userCheck.name,
                 }
                 return {
                     idAccount: userCheck.idAccount,
                     username: userCheck.username,
+                    name: userCheck.name,
                     token: jwt.sign(payload, SECRET, {
                         expiresIn: 3000000
                     })
