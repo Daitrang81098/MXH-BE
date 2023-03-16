@@ -47,7 +47,7 @@ class AccountService {
         return 'Username registered';
     }
     findById = async (id) => {
-        let account = await this.accountRepository.findOneBy({idUser: id});
+        let account = await this.accountRepository.findOneBy({idAccount: id});
         if (!account) {
             return null;
         }
