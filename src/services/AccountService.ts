@@ -54,11 +54,7 @@ class AccountService {
     }
     checkUserGG = async (user) => {
         let check = await this.accountRepository.findOneBy({username: user.username});
-        if (check) {
-                return true;
-            }else {
-                return false;
-            }
+        return !!check;
         }
 
     checkChangePassword = async (id, oldPassword, newPassword) => {
