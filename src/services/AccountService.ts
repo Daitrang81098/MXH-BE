@@ -76,7 +76,7 @@ class AccountService {
                 newPassword = await bcrypt.hash(newPassword, 10)
                 await this.accountRepository.update({idAccount: id}, {password: newPassword})
                 account.check = true;
-                account.accountFind = accountFind
+                account.accountFind = await this.accountRepository.findBy({idAccount: id})
             }
         }
         return account

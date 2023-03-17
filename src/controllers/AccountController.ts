@@ -61,10 +61,7 @@ class AccountController {
                     mess: "Old Password Is Not Correct"
                 })
             } else {
-                res.json({
-                    account,
-                    mess: "Change Password Successfully"
-                })
+                res.json(account)
             }
         } catch (e) {
             res.json({
