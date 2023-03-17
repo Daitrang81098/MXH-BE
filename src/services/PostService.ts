@@ -38,7 +38,7 @@ class PostService {
         if (!post) {
             return 'Can not createPost'
         }
-        return post;
+        return await this.findByIdAccount(post.account);
     }
     findByIdPost = async (idPost) => {
         let post = await this.postRepository.findOneBy({idPost: idPost});
@@ -53,7 +53,11 @@ class PostService {
         if (!posts) {
             return null
         }
-        return await this.postRepository.update({idPost: idPost}, newPost)
+        await this.postRepository.update({idPost: idPost}, newPost);
+        return await this.postRepository.createQueryBuilder("post")
+            .innerJoinAndSelect("post.account", "account")
+            .where(`idPost = ${idPost}`)
+            .getMany()
     }
     removePost = async (idPost) => {
         let posts = await this.postRepository.findOneBy({idPost: idPost});
