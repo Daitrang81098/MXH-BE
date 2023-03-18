@@ -4,6 +4,7 @@ import {Account} from "./models/Account";
 import Comment from "./models/Comment";
 import Like from "./models/Like";
 import Post from "./models/Post";
+import {Friend} from "./models/Friend";
 
 
 
@@ -15,5 +16,5 @@ export const AppDataSource = new DataSource({
     password: "123456",
     database: "mxh",
     synchronize: true,
-    entities: [Account,Comment,Like,Post]
+    entities: [Account,Comment,Like,Post,Friend]
 })
