@@ -13,18 +13,26 @@ class FriendService {
         let select = await this.friendRepository.query(sql);
         let friend = select[0]
         if(!friend){
-            return "Add friend"
+            return "Add Friend"
         } else {
             if (thisId === friend.idSender){
-                if(friend.status === "friends"){
-                    return "Friends"
+                if(friend.status === "Friends"){
+                    return {
+                        friend:friend,
+                        status:"Friends"}
                 }
-                return "Cancel Request"
+                return {
+                    friend:friend,
+                    status:"Cancel Request"}
             }
-            if(friend.status === "friends"){
-                return "Friends"
+            if(friend.status === "Friends"){
+                return {
+                    friend:friend,
+                    status:"Friends"}
             }
-            return "Confirm"
+            return {
+                friend:friend,
+                status:"Confirm"}
         }
     }
 

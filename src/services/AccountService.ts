@@ -30,6 +30,9 @@ class AccountService {
                     username: userCheck.username,
                     name: userCheck.name,
                     avatar : userCheck.avatar,
+                    address:userCheck.address,
+                    german:userCheck.german,
+                    birthday:userCheck.birthday,
                     token: jwt.sign(payload, SECRET, {
                         expiresIn: 3000000
                     })

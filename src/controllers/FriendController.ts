@@ -13,7 +13,9 @@ class FriendController {
         try{
             let thisId = req.body.thisId;
             let thatId = req.body.thatId;
+            console.log(req.body)
             let response = await this.friendService.checkFriend(thisId,thatId)
+
             res.status(200).json(response)
         }catch (e) {
             res.status(500).json(e.message)
