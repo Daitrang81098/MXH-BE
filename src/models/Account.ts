@@ -15,7 +15,7 @@ export class Account {
     name: string;
     @Column({ default: "01/01/2023"})
     birthday: string;
-    @Column({default: "1"})
+    @Column({default: "https://kenh14cdn.com/203336854389633024/2020/11/13/photo1605266767169-16052667674792035596777.jpg"})
     avatar: string;
     @Column({default: "man"})
     german: string;
