@@ -60,6 +60,18 @@ class PostService {
         return post;
     }
 
+    findByContent = async (search)=> {
+        let post = await this.postRepository.createQueryBuilder("post")
+            .innerJoinAndSelect("post.account", "account")
+            .where(`content like '%${search}%'`)
+            .orderBy("time", "DESC")
+            .getMany()
+        if(!post){
+            return "Can not find by name";
+        }
+        return post;
+    }
+
     updatePost = async (idPost, newPost) => {
         let posts = await this.postRepository.findOneBy({idPost: idPost})
         if (!posts) {
