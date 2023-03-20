@@ -36,6 +36,17 @@ import PostService from "../services/PostService";
          }
      }
 
+     findByContent = async (req: Request, res: Response) => {
+         try{
+             let search = req.query.search;
+             let response = await PostService.findByContent(search);
+             res.status(200).json(response)
+         }catch (e) {
+             res.status(500).json(e.message)
+         }
+
+     }
+
 
     getPost = async (req: Request, res: Response) => {
         try {
