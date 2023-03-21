@@ -21,6 +21,37 @@ class PostService {
         return post;
     }
 
+    findPosts = async (idFriends,idAccount) => {
+        let posts = [];
+        for(let i=0; i<idFriends.length; i++){
+            let a = await this.findByIdAccounts(idFriends[i]);
+            a.map(it=>{posts.push(it)})
+        }
+        let b = await this.findByIdAccount(idAccount);
+        b.map(it=>{posts.push(it)});
+        let c = await this.postRepository.createQueryBuilder("post")
+            .innerJoinAndSelect("post.account", "account")
+            .where(`account.idAccount != ${idAccount}`)
+            .andWhere('status = "public"')
+            .orderBy("time", "DESC")
+            .getMany();
+        c.map(it=>{posts.push(it)});
+        return posts
+    }
+
+    findByIdAccounts = async (idAccount) => {
+        let post = await this.postRepository.createQueryBuilder("post")
+            .innerJoinAndSelect("post.account", "account")
+            .where(`account.idAccount = ${idAccount}`)
+            .andWhere('status = "Friends"')
+            .orderBy("time", "DESC")
+            .getMany()
+        if (!post) {
+            return 'Can not findPost'
+        }
+        return post;
+    }
+
     findByIdAccount = async (idAccount) => {
         let post = await this.postRepository.createQueryBuilder("post")
             .innerJoinAndSelect("post.account", "account")
@@ -32,6 +63,7 @@ class PostService {
         }
         return post;
     }
+
     findBy = async (idPost) => {
         let post = await this.postRepository.createQueryBuilder("post")
             .innerJoinAndSelect("post.account","account")

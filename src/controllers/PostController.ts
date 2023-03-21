@@ -1,11 +1,14 @@
 import {Request, Response} from "express";
 import PostService from "../services/PostService";
+import FriendService from "../services/FriendService";
 
  class PostController {
     private postService;
+    private friendService;
 
     constructor() {
         this.postService = PostService;
+        this.friendService = FriendService;
     }
     editPost = async (req: Request, res: Response)=> {
         try {
@@ -51,6 +54,15 @@ import PostService from "../services/PostService";
     getPost = async (req: Request, res: Response) => {
         try {
             let response = await PostService.findPost();
+            res.status(200).json(response)
+        } catch (e) {
+            res.status(500).json(e.message)
+        }
+    }
+    getPosts = async (req: Request, res: Response) => {
+        try {
+            let idFriends = await FriendService.getIdFriends(req.params.idAccount);
+            let response = await PostService.findPosts(idFriends,req.params.idAccount)
             res.status(200).json(response)
         } catch (e) {
             res.status(500).json(e.message)

@@ -81,6 +81,23 @@ class FriendService {
         })
         return friends;
     }
+    getIdFriends = async (idAccount) => {
+        let id = [];
+        let res1 = await this.friendRepository.query(`select * from friend where idSender = ${idAccount}  and  friend.status = "Friends"`);
+        let res2 = await this.friendRepository.query(`select * from friend where idReceiver = ${idAccount}  and  friend.status = "Friends"`);
+        let account = await this.accountRepository.query(`select * from account `);
+        if(res1){
+            res1.map(it=>{
+                id.push(it.idReceiver)
+            })
+        }
+        if(res2){
+            res2.map(it=>{
+                id.push(it.idSender)
+            })
+        }
+        return id;
+    }
 
 }
 
