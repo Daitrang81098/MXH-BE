@@ -3,8 +3,8 @@ import {postRouter} from "./PostRouter";
 import {accountRouter} from "./AccountRouter";
 import {friendRouter} from "./FriendRouter";
 import {notificationRouter} from "./NotificationRouter";
-
 import {commentRouter} from "./CommentRouter";
+
 export const router = Router()
 router.use('/posts',postRouter);
 router.use("/accounts", accountRouter);
