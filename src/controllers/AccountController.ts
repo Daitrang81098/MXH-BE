@@ -57,14 +57,11 @@ class AccountController {
             if (!account.check) {
 
                 res.json({
-                     account,
+                    account,
                     mess: "Old Password Is Not Correct"
                 })
             } else {
-                res.json({
-                    account,
-                    mess: "Change Password Successfully"
-                })
+                res.json(account)
             }
         } catch (e) {
             res.json({
@@ -73,9 +70,9 @@ class AccountController {
         }
     }
 
-    editAccount = async (req: Request, res: Response)=> {
+    editAccount = async (req: Request, res: Response) => {
         try {
-            let account = await this.accountService.updateAccount(req.params.id,req.body);
+            let account = await this.accountService.updateAccount(req.params.id, req.body);
             res.status(200).json(account)
         } catch (e) {
             res.status(500).json(e.message)

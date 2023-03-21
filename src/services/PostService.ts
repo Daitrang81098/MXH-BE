@@ -35,8 +35,8 @@ class PostService {
     findBy = async (idPost) => {
         let post = await this.postRepository.createQueryBuilder("post")
             .innerJoinAndSelect("post.account","account")
-            .innerJoinAndSelect("post.comment","comment")
-            .orderBy("comment.time", "DESC")
+            // .innerJoinAndSelect("post.comment","comment")
+            // .orderBy("comment.time", "DESC")
             .where(`post.idPost = ${idPost}`)
             .getOne()
         if(!post) {
@@ -56,6 +56,18 @@ class PostService {
         let post = await this.postRepository.findOneBy({idPost: idPost});
         if (!post) {
             return null;
+        }
+        return post;
+    }
+
+    findByContent = async (search)=> {
+        let post = await this.postRepository.createQueryBuilder("post")
+            .innerJoinAndSelect("post.account", "account")
+            .where(`content like '%${search}%'`)
+            .orderBy("time", "DESC")
+            .getMany()
+        if(!post){
+            return "Can not find by name";
         }
         return post;
     }
