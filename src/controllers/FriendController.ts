@@ -46,6 +46,15 @@ class FriendController {
             res.status(500).json(e.message)
         }
     }
+
+    getListFriend = async (req: Request, res: Response) => {
+        try{
+            let response = await this.friendService.getFriends(req.params.idAccount)
+            res.status(200).json(response)
+        }catch (e) {
+            res.status(500).json(e.message)
+        }
+    }
 }
 
 export default new FriendController();
