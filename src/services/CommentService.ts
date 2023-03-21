@@ -11,7 +11,7 @@ class CommentService {
             relations: ['account','post']
         })
         if (!comment) {
-            return 'Can not findComment'
+            return 'Can not findPost'
         }
         return comment;
     }
@@ -20,6 +20,19 @@ class CommentService {
             .innerJoinAndSelect("comment.account", "account")
             .where(`account.idAccount = ${idAccount}`)
             .orderBy("time", "DESC")
+            .getMany()
+        if (!comment) {
+            return 'Can not findComment'
+        }
+        return comment;
+    }
+
+    findByIdPostComment = async (idComment) => {
+        let comment = await this.commentRepository.createQueryBuilder("comment")
+            .innerJoinAndSelect("comment.post", "post")
+            .innerJoinAndSelect("comment.account","account")
+            .where(`post.idPost = ${idComment}`)
+            .orderBy("comment.time", "DESC")
             .getMany()
         if (!comment) {
             return 'Can not findComment'

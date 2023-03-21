@@ -10,7 +10,7 @@ class PostService {
 
     findPost = async () => {
         let post = await this.postRepository.find({
-            relations: ['account','comment'],
+            relations: ['account','comment','comment.account'],
             order: {
                 time: "DESC"
             }

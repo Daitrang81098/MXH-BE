@@ -24,6 +24,16 @@ class CommentController {
             res.status(500).json(e.message)
         }
     }
+
+    findByIdCommentPost = async (req: Request, res: Response) => {
+        try {
+            let idComment = req.params.id;
+            let response = await CommentService.findByIdPostComment(idComment);
+            res.status(200).json(response)
+        } catch (e) {
+            res.status(500).json(e.message)
+        }
+    }
     addComment = async (req: Request, res: Response) => {
         try {
             let response = await CommentService.createComment(req.body);
