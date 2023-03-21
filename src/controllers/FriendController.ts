@@ -1,5 +1,4 @@
 import {Request, Response} from "express";
-import PostService from "../services/PostService";
 import FriendService from "../services/FriendService";
 
 class FriendController {
@@ -11,11 +10,37 @@ class FriendController {
 
     checkFriend = async (req: Request, res: Response) => {
         try{
-            let thisId = req.body.thisId;
-            let thatId = req.body.thatId;
-            console.log(req.body)
+            let thisId = req.query.thisId;
+            let thatId = req.query.thatId;
             let response = await this.friendService.checkFriend(thisId,thatId)
 
+            res.status(200).json(response)
+        }catch (e) {
+            res.status(500).json(e.message)
+        }
+    }
+
+    addFriend = async (req: Request, res: Response) => {
+        try{
+            let response = await this.friendService.createFriend(req.body)
+            res.status(200).json(response)
+        }catch (e) {
+            res.status(500).json(e.message)
+        }
+    }
+
+    updateFriend = async (req: Request, res: Response) => {
+        try{
+            let response = await this.friendService.edit(req.params.id)
+            res.status(200).json(response)
+        }catch (e) {
+            res.status(500).json(e.message)
+        }
+    }
+
+    removeFriend = async (req: Request, res: Response) => {
+        try{
+            let response = await this.friendService.remove(req.params.id)
             res.status(200).json(response)
         }catch (e) {
             res.status(500).json(e.message)

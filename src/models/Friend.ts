@@ -9,6 +9,6 @@ export class Friend {
     idSender: number;
     @Column()
     idReceiver: number;
-    @Column()
+    @Column({default:"Waiting"})
     status: string;
 }
