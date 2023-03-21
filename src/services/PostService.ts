@@ -10,7 +10,7 @@ class PostService {
 
     findPost = async () => {
         let post = await this.postRepository.find({
-            relations: ['account'],
+            relations: ['account','comment','comment.account'],
             order: {
                 time: "DESC"
             }
@@ -32,6 +32,19 @@ class PostService {
         }
         return post;
     }
+    findBy = async (idPost) => {
+        let post = await this.postRepository.createQueryBuilder("post")
+            .innerJoinAndSelect("post.account","account")
+            // .innerJoinAndSelect("post.comment","comment")
+            // .orderBy("comment.time", "DESC")
+
+            .where(`post.idPost = ${idPost}`)
+            .getOne()
+        if(!post) {
+            return "can not findByIdPost"
+        }
+        return post
+    }
 
     createPost = async (value) => {
         let post = await this.postRepository.save(value);
@@ -44,6 +57,18 @@ class PostService {
         let post = await this.postRepository.findOneBy({idPost: idPost});
         if (!post) {
             return null;
+        }
+        return post;
+    }
+
+    findByContent = async (search)=> {
+        let post = await this.postRepository.createQueryBuilder("post")
+            .innerJoinAndSelect("post.account", "account")
+            .where(`content like '%${search}%'`)
+            .orderBy("time", "DESC")
+            .getMany()
+        if(!post){
+            return "Can not find by name";
         }
         return post;
     }

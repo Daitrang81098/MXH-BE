@@ -29,11 +29,22 @@ import PostService from "../services/PostService";
      findByIdPost = async (req: Request, res: Response) => {
          try{
              let idPost = req.params.id
-             let post = await this.postService.findByIdPost(idPost);
+             let post = await this.postService.findBy(idPost);
              res.status(200).json(post)
          } catch (e) {
              res.status(500).json(e.message)
          }
+     }
+
+     findByContent = async (req: Request, res: Response) => {
+         try{
+             let search = req.query.search;
+             let response = await PostService.findByContent(search);
+             res.status(200).json(response)
+         }catch (e) {
+             res.status(500).json(e.message)
+         }
+
      }
 
 
@@ -66,15 +77,6 @@ import PostService from "../services/PostService";
         }
     }
 }
-
-
-
-
-
-
-
-
-
 
 export default new PostController();
 
