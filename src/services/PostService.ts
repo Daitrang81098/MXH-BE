@@ -37,7 +37,6 @@ class PostService {
             .innerJoinAndSelect("post.account","account")
             // .innerJoinAndSelect("post.comment","comment")
             // .orderBy("comment.time", "DESC")
-
             .where(`post.idPost = ${idPost}`)
             .getOne()
         if(!post) {
@@ -45,7 +44,6 @@ class PostService {
         }
         return post
     }
-
     createPost = async (value) => {
         let post = await this.postRepository.save(value);
         if (!post) {
