@@ -27,11 +27,11 @@ class PostService {
             let a = await this.findByIdAccounts(idFriends[i]);
             a.map(it=>{posts.push(it)})
         }
-        let b = await this.findByIdAccount(idAccount);
+        let b = await this.findByIdAccountss(idAccount);
         b.map(it=>{posts.push(it)});
         let c = await this.postRepository.createQueryBuilder("post")
             .innerJoinAndSelect("post.account", "account")
-            .innerJoinAndSelect("post.comment", "comment")
+            .leftJoinAndSelect("post.comment", "comment")
             .where(`account.idAccount != ${idAccount}`)
             .andWhere('status = "public"')
             .orderBy("post.time", "DESC")
@@ -43,9 +43,22 @@ class PostService {
     findByIdAccounts = async (idAccount) => {
         let post = await this.postRepository.createQueryBuilder("post")
             .innerJoinAndSelect("post.account", "account")
-            .innerJoinAndSelect("post.comment", "comment")
+            .leftJoinAndSelect("post.comment", "comment")
             .where(`account.idAccount = ${idAccount}`)
             .andWhere('status = "Friends"')
+            .orderBy("post.time", "DESC")
+            .getMany()
+        if (!post) {
+            return 'Can not findPost'
+        }
+        return post;
+    }
+
+    findByIdAccountss = async (idAccount) => {
+        let post = await this.postRepository.createQueryBuilder("post")
+            .innerJoinAndSelect("post.account", "account")
+            .leftJoinAndSelect("post.comment", "comment")
+            .where(`account.idAccount = ${idAccount}`)
             .orderBy("post.time", "DESC")
             .getMany()
         if (!post) {
@@ -57,7 +70,6 @@ class PostService {
     findByIdAccount = async (idAccount) => {
         let post = await this.postRepository.createQueryBuilder("post")
             .innerJoinAndSelect("post.account", "account")
-            .innerJoinAndSelect("post.comment", "comment")
             .where(`account.idAccount = ${idAccount}`)
             .orderBy("post.time", "DESC")
             .getMany()
@@ -81,10 +93,13 @@ class PostService {
     }
     createPost = async (value) => {
         let post = await this.postRepository.save(value);
+
         if (!post) {
             return 'Can not createPost'
         }
         return await this.findByIdAccount(post.account);
+
+
     }
     findByIdPost = async (idPost) => {
         let post = await this.postRepository.findOneBy({idPost: idPost});
