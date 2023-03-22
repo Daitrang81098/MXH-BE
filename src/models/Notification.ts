@@ -2,13 +2,13 @@ import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 
 
 @Entity()
-export class Friend {
+export class Notification {
     @PrimaryGeneratedColumn()
     id: number;
     @Column()
     idSender: number;
     @Column()
     idReceiver: number;
-    @Column({default:"Waiting"})
+    @Column()
     status: string;
 }

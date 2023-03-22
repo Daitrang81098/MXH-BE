@@ -37,6 +37,7 @@ class PostService {
             .innerJoinAndSelect("post.account","account")
             // .innerJoinAndSelect("post.comment","comment")
             // .orderBy("comment.time", "DESC")
+
             .where(`post.idPost = ${idPost}`)
             .getOne()
         if(!post) {
