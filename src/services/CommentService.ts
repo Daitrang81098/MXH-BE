@@ -73,6 +73,7 @@ class CommentService {
         await this.commentRepository.update({idComment: idComment}, newComment);
         return await this.commentRepository.createQueryBuilder("comment")
             .innerJoinAndSelect("comment.account", "account")
+            .innerJoinAndSelect("comment.post","post")
             .where(`idComment = ${idComment}`)
             .getMany()
     }

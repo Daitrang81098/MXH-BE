@@ -46,6 +46,7 @@ class CommentController {
         try {
             let idComment = req.params.idComment;
             let newComment = req.body;
+            console.log(newComment)
             let comments = await this.commentService.updateComment(idComment,newComment);
             res.status(200).json(comments)
         } catch (e) {
