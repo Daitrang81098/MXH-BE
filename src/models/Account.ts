@@ -2,6 +2,7 @@ import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import Post from "./Post";
 import Comment from "./Comment";
 import Like from "./Like";
+import {Message} from "./Message";
 
 @Entity()
 export class Account {
@@ -11,11 +12,11 @@ export class Account {
     username: string;
     @Column()
     password: string;
-    @Column({default: "DaiS"})
+    @Column({default: "New User"})
     name: string;
     @Column({ default: "01/01/2023"})
     birthday: string;
-    @Column({default: "https://kenh14cdn.com/203336854389633024/2020/11/13/photo1605266767169-16052667674792035596777.jpg"})
+    @Column({default: "https://gocsuckhoe.com/wp-content/uploads/2020/09/avatar-facebook.jpg"})
     avatar: string;
     @Column({default: "man"})
     german: string;
@@ -27,4 +28,9 @@ export class Account {
     comment: Comment[];
     @OneToMany(() => Like, (like) => like.account)
     like: Like[];
+    @OneToMany(() => Message, (message) => message.sender)
+    sentMessages: Message[];
+
+    @OneToMany(() => Message, (message) => message.receiver)
+    receivedMessages: Message[];
 }
