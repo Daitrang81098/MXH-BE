@@ -1,6 +1,5 @@
 import commentService from "../services/CommentService";
 import {Request, Response} from "express";
-import PostService from "../services/PostService";
 import CommentService from "../services/CommentService";
 
 class CommentController {

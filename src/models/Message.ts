@@ -1,6 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
 import { Account } from './Account';
-import { createConnection } from 'typeorm';
 
 @Entity()
 export class Message {
