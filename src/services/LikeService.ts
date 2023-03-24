@@ -23,6 +23,7 @@ class LikeService {
         return post
     }
 
+
     like = async (values) => {
         let res = await this.likeRepository.save(values);
         if (!res){
