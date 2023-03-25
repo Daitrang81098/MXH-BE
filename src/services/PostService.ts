@@ -51,7 +51,7 @@ class PostService {
         if (!post) {
             return 'Can not createPost'
         }
-        return await this.findByIdAccount(post.account);
+        return await this.findPost()
     }
     findByIdPost = async (idPost) => {
         let post = await this.postRepository.findOneBy({idPost: idPost});
