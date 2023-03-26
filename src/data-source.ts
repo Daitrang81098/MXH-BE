@@ -18,4 +18,5 @@ export const AppDataSource = new DataSource({
     database: "mxh",
     synchronize: true,
     entities: [Account,Comment,Like,Post,Friend,Notification]
+
 })

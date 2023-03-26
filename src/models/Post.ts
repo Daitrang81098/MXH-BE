@@ -1,4 +1,4 @@
-import {Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn,JoinColumn} from "typeorm";
 import Like from "./Like";
 import Comment from "./Comment";
 import {Account} from "./Account";
@@ -15,7 +15,8 @@ export default class Post {
     time: Date;
     @Column({default: "1"})
     image: string;
-    @OneToMany(() => Comment, (comment) => comment.post)
+    @OneToMany(() => Comment, (comment) => comment.post, { onDelete: 'CASCADE' })
+    @JoinColumn()
     comment: Comment[]
     @OneToMany(() => Like, (like) => like.post)
     like: Like[]
