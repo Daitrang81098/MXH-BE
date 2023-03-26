@@ -8,38 +8,69 @@ class PostService {
         this.postRepository = AppDataSource.getRepository(Post)
     }
 
-    findPost = async () => {
-        let post = await this.postRepository.find({
+    findPost = async (idPost) => {
+        let posts = await this.postRepository.find({
             relations: ['account','comment','comment.account'],
             order: {
                 time: "DESC"
             }
         })
-        if (!post) {
-            return 'Can not findPost'
-        }
-        return post;
+        let o = [];
+        posts.map(it=>{o.push(it.idPost)});
+        let new_arr = o.filter(item => !idPost.includes(item));
+
+        idPost.map(it=>{
+           for(let i = 0;i<posts.length;i++){
+               if(it === posts[i].idPost){
+                   this.postRepository.update({idPost:it}, {isLike:2})
+               }
+           }
+        })
+        new_arr.map(it=>{
+            posts.map(post=>{
+                if(it === post.idPost){
+                    this.postRepository.update({idPost:it}, {isLike:1})
+                }
+            })
+
+        })
+        return this.postRepository.find({
+            relations: ['account','comment','comment.account'],
+            order: {
+                time: "DESC"
+            }
+        });
     }
 
-    findPosts = async (idFriends,idAccount) => {
+    // Chưa dùng nhé
+    findPosts = async (idFriends,idAccount,idPost) => {
         let posts = [];
         for(let i=0; i<idFriends.length; i++){
-            let a = await this.findByIdAccounts(idFriends[i]);
-            a.map(it=>{posts.push(it)})
+            let friend = await this.findByIdAccounts(idFriends[i]);
+            friend.map(it=>{posts.push(it)})
         }
-        let b = await this.findByIdAccountss(idAccount);
-        b.map(it=>{posts.push(it)});
-        let c = await this.postRepository.createQueryBuilder("post")
+        let account = await this.findByIdAccountss(idAccount);
+        account.map(it=>{posts.push(it)});
+        let status = await this.postRepository.createQueryBuilder("post")
             .innerJoinAndSelect("post.account", "account")
             .leftJoinAndSelect("post.comment", "comment")
             .where(`account.idAccount != ${idAccount}`)
             .andWhere('status = "public"')
             .orderBy("post.time", "DESC")
             .getMany();
-        c.map(it=>{posts.push(it)});
+        status.map(it=>{posts.push(it)});
+        idPost.map(it=>{
+            posts.map(post=>{
+                if(it === post.idPost){
+                    this.postRepository.update({idPost:it}, {isLike:2})
+                }
+            })
+        })
         return posts
     }
 
+
+    // Chưa dùng nhé
     findByIdAccounts = async (idAccount) => {
         let post = await this.postRepository.createQueryBuilder("post")
             .innerJoinAndSelect("post.account", "account")
@@ -53,7 +84,7 @@ class PostService {
         }
         return post;
     }
-
+    // Chưa dùng nhé
     findByIdAccountss = async (idAccount) => {
         let post = await this.postRepository.createQueryBuilder("post")
             .innerJoinAndSelect("post.account", "account")
@@ -93,11 +124,13 @@ class PostService {
     }
     createPost = async (value) => {
         let post = await this.postRepository.save(value);
-
         if (!post) {
             return 'Can not createPost'
         }
-        return await this.findByIdAccount(post.account);
+        return await this.postRepository.createQueryBuilder("post")
+            .innerJoinAndSelect("post.account", "account")
+            .where(`idPost = ${post.idPost}`)
+            .getMany()
 
 
     }
