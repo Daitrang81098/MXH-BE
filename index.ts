@@ -43,7 +43,11 @@ socketIo.on("connection", (socket) => {
                    order by (time) ASC`
         let content = await message.query(sql)
         await socketIo.emit("sendDataServer", {content});
-    })
+    });
+    socket.on('new message', (data: any) => {
+        console.log(`Received message: ${data}`);
+        io.emit('new messag e', { message: 'New message received' });
+    });
 
     socket.on("disconnect", () => {
         console.log("Client disconnected");
