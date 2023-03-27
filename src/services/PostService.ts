@@ -111,7 +111,8 @@ class PostService {
     findByIdAccount = async (idAccount) => {
         let post = await this.postRepository.createQueryBuilder("post")
             .innerJoinAndSelect("post.account", "account")
-            .innerJoinAndSelect("post.comment", "comment")
+            .leftJoinAndSelect("post.comment", "comment")
+            .leftJoinAndSelect("post.like", "like")
             .where(`account.idAccount = ${idAccount}`)
             .orderBy("post.time", "DESC")
             .getMany()
@@ -124,8 +125,8 @@ class PostService {
     findBy = async (idPost) => {
         let post = await this.postRepository.createQueryBuilder("post")
             .innerJoinAndSelect("post.account","account")
-            .innerJoinAndSelect("post.like", "like")
-            // .innerJoinAndSelect("post.comment","comment")
+            .leftJoinAndSelect("post.like", "like")
+            .leftJoinAndSelect("post.comment","comment")
             // .orderBy("comment.time", "DESC")
             .where(`post.idPost = ${idPost}`)
             .getOne()
@@ -173,6 +174,8 @@ class PostService {
         await this.postRepository.update({idPost: idPost}, newPost);
         return await this.postRepository.createQueryBuilder("post")
             .innerJoinAndSelect("post.account", "account")
+            .leftJoinAndSelect("post.like", "like")
+            .leftJoinAndSelect("post.comment","comment")
             .where(`idPost = ${idPost}`)
             .getMany()
     }
