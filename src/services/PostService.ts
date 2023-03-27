@@ -141,6 +141,7 @@ class PostService {
         }
         return await this.postRepository.createQueryBuilder("post")
             .innerJoinAndSelect("post.account", "account")
+            .leftJoinAndSelect("post.like", "like")
             .where(`idPost = ${post.idPost}`)
             .getMany()
     }
