@@ -34,7 +34,7 @@ class PostService {
 
         })
         return this.postRepository.find({
-            relations: ['account','comment','comment.account'],
+            relations: ['account','comment','comment.account','like','like.account'],
             order: {
                 time: "DESC"
             }
@@ -109,6 +109,7 @@ class PostService {
     findBy = async (idPost) => {
         let post = await this.postRepository.createQueryBuilder("post")
             .innerJoinAndSelect("post.account","account")
+            .leftJoinAndSelect("post.like", "like")
             // .innerJoinAndSelect("post.comment","comment")
             // .orderBy("comment.time", "DESC")
             .where(`post.idPost = ${idPost}`)
