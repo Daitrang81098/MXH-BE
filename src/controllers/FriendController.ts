@@ -7,7 +7,6 @@ class FriendController {
     constructor() {
         this.friendService = FriendService;
     }
-
     checkFriend = async (req: Request, res: Response) => {
         try{
             let thisId = req.query.thisId;

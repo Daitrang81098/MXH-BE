@@ -13,7 +13,6 @@ class PostService {
         this.commentRepository = AppDataSource.getRepository(Comment)
         this.likeRepository = AppDataSource.getRepository(Like)
     }
-
     findPost = async (idPost) => {
         let posts = await this.postRepository.find({
             relations: ['account', 'comment', 'comment.account'],
@@ -43,13 +42,12 @@ class PostService {
 
         })
         return this.postRepository.find({
-            relations: ['account', 'comment', 'comment.account'],
+            relations: ['account','comment','comment.account','like','like.account'],
             order: {
                 time: "DESC"
             }
         });
     }
-
     // Chưa dùng nhé
     findPosts = async (idFriends, idAccount, idPost) => {
         let posts = [];
@@ -82,8 +80,6 @@ class PostService {
         })
         return posts
     }
-
-
     // Chưa dùng nhé
     findByIdAccounts = async (idAccount) => {
         let post = await this.postRepository.createQueryBuilder("post")
@@ -127,7 +123,8 @@ class PostService {
 
     findBy = async (idPost) => {
         let post = await this.postRepository.createQueryBuilder("post")
-            .innerJoinAndSelect("post.account", "account")
+            .innerJoinAndSelect("post.account","account")
+            .leftJoinAndSelect("post.like", "like")
             // .innerJoinAndSelect("post.comment","comment")
             // .orderBy("comment.time", "DESC")
             .where(`post.idPost = ${idPost}`)
@@ -146,8 +143,6 @@ class PostService {
             .innerJoinAndSelect("post.account", "account")
             .where(`idPost = ${post.idPost}`)
             .getMany()
-
-
     }
     findByIdPost = async (idPost) => {
         let post = await this.postRepository.findOneBy({idPost: idPost});
@@ -199,5 +194,4 @@ class PostService {
          await this.postRepository.remove(post);
     }
 }
-
 export default new PostService();

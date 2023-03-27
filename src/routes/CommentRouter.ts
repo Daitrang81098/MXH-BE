@@ -1,5 +1,4 @@
 import {Router} from "express";
-import {postRouter} from "./PostRouter";
 import commentController from "../controllers/CommentController";
 
 export const commentRouter = Router()

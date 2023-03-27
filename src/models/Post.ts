@@ -9,7 +9,7 @@ export default class Post {
     idPost: number;
     @Column({default:1})
     isLike: string;
-    @Column({default: "public"})
+    @Column({default: "Public"})
     status: string;
     @Column()
     content: string;

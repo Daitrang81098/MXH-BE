@@ -11,4 +11,6 @@ export class Notification {
     idReceiver: number;
     @Column()
     status: string;
+    @Column({default:'new'})
+    check: string;
 }
