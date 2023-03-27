@@ -42,6 +42,7 @@ export class MessageService {
         return await AppDataSource.getRepository(Account).findByIds(idAccounts);
     }
 
+
 // lấy ra tin nhắn giữ 2 người
     getMessages = async (req: Request) => {
         if (req.query.senderId !== undefined && req.query.receiverId !== undefined) {
