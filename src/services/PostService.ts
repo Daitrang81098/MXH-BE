@@ -1,34 +1,42 @@
 import {AppDataSource} from "../data-source";
 import Post from "../models/Post";
+import Comment from "../models/Comment";
+import Like from "../models/Like";
 
 class PostService {
     private postRepository
+    private commentRepository
+    private likeRepository
 
     constructor() {
         this.postRepository = AppDataSource.getRepository(Post)
+        this.commentRepository = AppDataSource.getRepository(Comment)
+        this.likeRepository = AppDataSource.getRepository(Like)
     }
     findPost = async (idPost) => {
         let posts = await this.postRepository.find({
-            relations: ['account','comment','comment.account'],
+            relations: ['account', 'comment', 'comment.account'],
             order: {
                 time: "DESC"
             }
         })
         let o = [];
-        posts.map(it=>{o.push(it.idPost)});
+        posts.map(it => {
+            o.push(it.idPost)
+        });
         let new_arr = o.filter(item => !idPost.includes(item));
 
-        idPost.map(it=>{
-           for(let i = 0;i<posts.length;i++){
-               if(it === posts[i].idPost){
-                   this.postRepository.update({idPost:it}, {isLike:2})
-               }
-           }
+        idPost.map(it => {
+            for (let i = 0; i < posts.length; i++) {
+                if (it === posts[i].idPost) {
+                    this.postRepository.update({idPost: it}, {isLike: 2})
+                }
+            }
         })
-        new_arr.map(it=>{
-            posts.map(post=>{
-                if(it === post.idPost){
-                    this.postRepository.update({idPost:it}, {isLike:1})
+        new_arr.map(it => {
+            posts.map(post => {
+                if (it === post.idPost) {
+                    this.postRepository.update({idPost: it}, {isLike: 1})
                 }
             })
 
@@ -41,14 +49,18 @@ class PostService {
         });
     }
     // Chưa dùng nhé
-    findPosts = async (idFriends,idAccount,idPost) => {
+    findPosts = async (idFriends, idAccount, idPost) => {
         let posts = [];
-        for(let i=0; i<idFriends.length; i++){
+        for (let i = 0; i < idFriends.length; i++) {
             let friend = await this.findByIdAccounts(idFriends[i]);
-            friend.map(it=>{posts.push(it)})
+            friend.map(it => {
+                posts.push(it)
+            })
         }
         let account = await this.findByIdAccountss(idAccount);
-        account.map(it=>{posts.push(it)});
+        account.map(it => {
+            posts.push(it)
+        });
         let status = await this.postRepository.createQueryBuilder("post")
             .innerJoinAndSelect("post.account", "account")
             .leftJoinAndSelect("post.comment", "comment")
@@ -56,11 +68,13 @@ class PostService {
             .andWhere('status = "public"')
             .orderBy("post.time", "DESC")
             .getMany();
-        status.map(it=>{posts.push(it)});
-        idPost.map(it=>{
-            posts.map(post=>{
-                if(it === post.idPost){
-                    this.postRepository.update({idPost:it}, {isLike:2})
+        status.map(it => {
+            posts.push(it)
+        });
+        idPost.map(it => {
+            posts.map(post => {
+                if (it === post.idPost) {
+                    this.postRepository.update({idPost: it}, {isLike: 2})
                 }
             })
         })
@@ -97,6 +111,7 @@ class PostService {
     findByIdAccount = async (idAccount) => {
         let post = await this.postRepository.createQueryBuilder("post")
             .innerJoinAndSelect("post.account", "account")
+            .innerJoinAndSelect("post.comment", "comment")
             .where(`account.idAccount = ${idAccount}`)
             .orderBy("post.time", "DESC")
             .getMany()
@@ -109,12 +124,12 @@ class PostService {
     findBy = async (idPost) => {
         let post = await this.postRepository.createQueryBuilder("post")
             .innerJoinAndSelect("post.account","account")
-            .leftJoinAndSelect("post.like", "like")
+            .innerJoinAndSelect("post.like", "like")
             // .innerJoinAndSelect("post.comment","comment")
             // .orderBy("comment.time", "DESC")
             .where(`post.idPost = ${idPost}`)
             .getOne()
-        if(!post) {
+        if (!post) {
             return "can not findByIdPost"
         }
         return post
@@ -138,13 +153,13 @@ class PostService {
         return post;
     }
 
-    findByContent = async (search)=> {
+    findByContent = async (search) => {
         let post = await this.postRepository.createQueryBuilder("post")
             .innerJoinAndSelect("post.account", "account")
             .where(`content like '%${search}%'`)
             .orderBy("time", "DESC")
             .getMany()
-        if(!post){
+        if (!post) {
             return "Can not find by name";
         }
         return post;
@@ -162,11 +177,22 @@ class PostService {
             .getMany()
     }
     removePost = async (idPost) => {
-        let posts = await this.postRepository.findOneBy({idPost: idPost});
-        if (!posts) {
+        let post = await this.postRepository.createQueryBuilder("post")
+            .leftJoinAndSelect("post.comment", "comment")
+            .leftJoinAndSelect("post.like", "like")
+            .where(`post.idPost = ${idPost}`)
+            .getOne()
+        if (!post) {
             return null
         }
-        return this.postRepository.delete({idPost: idPost});
+        await Promise.all(post.comment.map((commentPost) => {
+        this.commentRepository.remove(commentPost);
+        }));
+        await Promise.all(post.like.map((likePost) => {
+             this.likeRepository.remove(likePost);
+        }));
+
+         await this.postRepository.remove(post);
     }
 }
 export default new PostService();

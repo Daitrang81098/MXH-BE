@@ -17,9 +17,9 @@ export default class Post {
     time: Date;
     @Column({default: "1"})
     image: string;
-    @OneToMany(() => Comment, (comment) => comment.post)
+    @OneToMany(() => Comment, (comment) => comment.post, { cascade : true })
     comment: Comment[]
-    @OneToMany(() => Like, (like) => like.post)
+    @OneToMany(() => Like, (like) => like.post,{ cascade : true })
     like: Like[]
     @ManyToOne(()=>Account,(account)=>account.post)
     account : Account;
