@@ -1,6 +1,6 @@
 import {AppDataSource} from "../data-source";
 import Like from "../models/Like";
-import postController from "../controllers/PostController";
+
 
 
 class LikeService {
