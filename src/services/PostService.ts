@@ -122,6 +122,7 @@ class PostService {
         return post;
     }
 
+
     findBy = async (idPost) => {
         let post = await this.postRepository.createQueryBuilder("post")
             .innerJoinAndSelect("post.account","account")
