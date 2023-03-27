@@ -1,6 +1,7 @@
 import {Request, Response} from "express";
 import PostService from "../services/PostService";
 import FriendService from "../services/FriendService";
+import LikeService from "../services/LikeService";
 
  class PostController {
     private postService;
@@ -53,7 +54,8 @@ import FriendService from "../services/FriendService";
 
     getPost = async (req: Request, res: Response) => {
         try {
-            let response = await PostService.findPost();
+            let idPost = await LikeService.getLike(req.params.idAccount)
+            let response = await PostService.findPost(idPost);
             res.status(200).json(response)
         } catch (e) {
             res.status(500).json(e.message)
@@ -62,7 +64,8 @@ import FriendService from "../services/FriendService";
     getPosts = async (req: Request, res: Response) => {
         try {
             let idFriends = await FriendService.getIdFriends(req.params.idAccount);
-            let response = await PostService.findPosts(idFriends,req.params.idAccount)
+            let idPost = await LikeService.getLike(req.params.idAccount)
+            let response = await PostService.findPosts(idFriends,req.params.idAccount,idPost)
             res.status(200).json(response)
         } catch (e) {
             res.status(500).json(e.message)
