@@ -46,7 +46,7 @@ socketIo.on("connection", (socket) => {
     });
     socket.on('new message', (data: any) => {
         console.log(`Received message: ${data}`);
-        io.emit('new messag e', { message: 'New message received' });
+        io.emit('new message', { message: 'New message received' });
     });
 
     socket.on("disconnect", () => {
